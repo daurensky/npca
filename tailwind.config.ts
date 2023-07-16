@@ -5,7 +5,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        heading: ["Playfair Display", "serif"],
+        heading: ["Lora", "serif"],
         body: ["Roboto", "sans-serif"],
       },
     },

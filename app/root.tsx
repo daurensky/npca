@@ -2,6 +2,7 @@ import { cssBundleHref } from "@remix-run/css-bundle";
 import type { ActionArgs, LinksFunction, LoaderArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import {
+  Link,
   Links,
   LiveReload,
   Meta,
@@ -11,14 +12,16 @@ import {
   useLoaderData,
 } from "@remix-run/react";
 import { useTranslation } from "react-i18next";
-import { AppBar, Footer } from "~/shared/ui";
+import { AppBar, ContentSection, Footer } from "~/shared/ui";
+import { sectionsApi } from "./shared/api";
 import { i18nLib, i18nModel } from "./shared/i18n";
-import styles from "./tailwind.css";
 import { sessionModel } from "./shared/session";
+import styles from "./tailwind.css";
 
 export const loader = async ({ request }: LoaderArgs) => {
   const locale = await i18nModel.getLocale(request);
-  return json({ locale });
+  const sections = await sectionsApi.getSectionsList();
+  return json({ locale, sections });
 };
 
 export const action = async ({ request }: ActionArgs) => {
@@ -48,8 +51,8 @@ export const handle = {
 };
 
 const App = () => {
-  const { locale } = useLoaderData<typeof loader>();
-  const { i18n } = useTranslation();
+  const { locale, sections } = useLoaderData<typeof loader>();
+  const { i18n, t } = useTranslation();
 
   // This hook will change the i18n instance language to the current locale
   // detected by the loader, this way, when we do something to change the
@@ -64,13 +67,14 @@ const App = () => {
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <Meta />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"
           href="https://fonts.gstatic.com"
           crossOrigin=""
         />
         <link
-          href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Roboto&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500&family=Roboto:wght@400;500&display=swap"
           rel="stylesheet"
         />
         <link
@@ -79,9 +83,24 @@ const App = () => {
         />
         <Links />
       </head>
-      <body className="flex flex-col h-screen bg-[#0a0a0a] text-white font-body">
+      <body className="flex flex-col h-screen font-body">
         <AppBar />
         <Outlet />
+        <ContentSection className="bg-gray-100">
+          <h2 className="text-2xl font-medium font-heading">{t("Разделы")}</h2>
+          <ul className="grid lg:grid-cols-3 gap-4">
+            {sections.data.map(({ id, attributes }) => (
+              <li key={id} className="flex">
+                <Link
+                  to={`/s/${id}`}
+                  className="p-8 text-xl bg-black/90 text-white font-heading font-medium rounded-xl w-full text-center flex justify-center items-center hover:bg-black transition-colors"
+                >
+                  {attributes.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </ContentSection>
         <Footer />
 
         <ScrollRestoration />

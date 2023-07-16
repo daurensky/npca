@@ -4,7 +4,7 @@ import { Link, useLoaderData } from "@remix-run/react";
 import { useTranslation } from "react-i18next";
 import { sectionsApi } from "~/shared/api";
 import { SERVER_URL } from "~/shared/config/server";
-import { ContentSection, Main } from "~/shared/ui";
+import { Breadcrumb, BreadcrumbList, ContentSection, Main } from "~/shared/ui";
 
 export const loader = async ({ params }: LoaderArgs) => {
   const sectionId = params.section as string;
@@ -32,33 +32,24 @@ const Relations = () => {
   const { t } = useTranslation();
   const { section, cmsPublicPath } = useLoaderData<typeof loader>();
 
-  console.log(section);
-
   return (
     <Main>
       <ContentSection>
-        <div className="flex flex-col items-start gap-4">
-          <Link
-            to="/"
-            className="flex items-center gap-4 hover:bg-white/10 px-4 py-2 rounded-md transition-colors"
-          >
-            <span className="material-symbols-outlined">arrow_back</span>
-            {t("На главную")}
-          </Link>
+        <BreadcrumbList>
+          <Breadcrumb to="/">{t("Главная")}</Breadcrumb>
           {section.data.attributes.section.data && (
-            <Link
-              to={`/s/${section.data.attributes.section.data.id}`}
-              className="flex items-center gap-4 hover:bg-white/10 px-4 py-2 rounded-md transition-colors"
-            >
-              <span className="material-symbols-outlined">turn_right</span>
+            <Breadcrumb to={`/s/${section.data.attributes.section.data.id}`}>
               {section.data.attributes.section.data.attributes.name}
-            </Link>
+            </Breadcrumb>
           )}
-        </div>
-        <h1 className="inline-block font-bold text-4xl relative before:absolute before:bottom-0.5 before:h-2 before:w-full before:left-2 before:bg-[#006480] before:-z-10">
+          <Breadcrumb>{section.data.attributes.name}</Breadcrumb>
+        </BreadcrumbList>
+
+        <h1 className="inline-block text-2xl font-medium font-heading">
           {section.data.attributes.name}
         </h1>
-        <table className="bg-black/30 rounded-xl w-full">
+
+        <table className="w-full">
           <thead>
             <tr>
               <th className="p-4"></th>
@@ -72,7 +63,7 @@ const Relations = () => {
               <tr key={id}>
                 <td>
                   <div className="px-4 flex items-center justify-center">
-                    <span className="material-symbols-outlined text-3xl">
+                    <span className="material-symbols-outlined text-3xl text-black/90">
                       folder
                     </span>
                   </div>
@@ -81,7 +72,7 @@ const Relations = () => {
                   <div className="pr-4">
                     <Link
                       to={`/s/${id}`}
-                      className="break-all block p-4 hover:bg-white/5 transition-colors w-full rounded-xl duration-100"
+                      className="break-all block p-4 hover:bg-black/5 transition-colors w-full rounded-xl duration-100"
                     >
                       {attributes.name}
                     </Link>
@@ -94,7 +85,7 @@ const Relations = () => {
                 <tr key={hash}>
                   <td>
                     <div className="px-4 flex items-center justify-center">
-                      <span className="material-symbols-outlined text-3xl">
+                      <span className="material-symbols-outlined text-3xl text-black/90">
                         picture_as_pdf
                       </span>
                     </div>
@@ -103,7 +94,7 @@ const Relations = () => {
                     <div className="pr-4">
                       <Link
                         to={`${cmsPublicPath}${url}`}
-                        className="break-all block p-4 hover:bg-white/5 transition-colors w-full rounded-xl duration-100"
+                        className="break-all block p-4 hover:bg-black/5 transition-colors w-full rounded-xl duration-100"
                       >
                         {name.replace(/\.[^/.]+$/, "")}
                       </Link>
