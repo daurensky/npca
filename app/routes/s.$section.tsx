@@ -1,42 +1,44 @@
-import type { LoaderArgs, V2_MetaFunction } from "@remix-run/node";
-import { json } from "@remix-run/node";
-import { Link, useLoaderData } from "@remix-run/react";
-import { useTranslation } from "react-i18next";
-import { sectionsApi } from "~/shared/api";
-import { SERVER_URL } from "~/shared/config/server";
-import { Breadcrumb, BreadcrumbList, ContentSection, Main } from "~/shared/ui";
+import type { LoaderArgs, V2_MetaFunction } from '@remix-run/node'
+import { json } from '@remix-run/node'
+import { Link, useLoaderData } from '@remix-run/react'
+import { useTranslation } from 'react-i18next'
+import { sectionsApi } from '~/shared/api'
+import { SERVER_URL } from '~/shared/config/server'
+import { i18nModel } from '~/shared/i18n'
+import { Breadcrumb, BreadcrumbList, ContentSection, Main } from '~/shared/ui'
 
-export const loader = async ({ params }: LoaderArgs) => {
-  const sectionId = params.section as string;
+export const loader = async ({ request, params }: LoaderArgs) => {
+  const sectionId = params.section as string
+  const locale = await i18nModel.getLocale(request)
 
-  const section = await sectionsApi.getSectionById({ id: sectionId });
-  const cmsPublicPath = SERVER_URL;
+  const section = await sectionsApi.getSectionById({ id: sectionId, locale })
+  const cmsPublicPath = SERVER_URL
 
-  return json({ section, cmsPublicPath });
-};
+  return json({ section, cmsPublicPath })
+}
 
 export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
   return [
     {
-      title: data?.section.data.attributes.name || "Неизвестный раздел",
+      title: data?.section.data.attributes.name || 'Неизвестный раздел',
     },
     {
-      name: "description",
+      name: 'description',
       content:
-        "Мы рады Вас приветствовать на информационной площадке по освещению межнациональных отношений и национальной политики в странах Центральной Азии.",
+        'Мы рады Вас приветствовать на информационной площадке по освещению межнациональных отношений и национальной политики в странах Центральной Азии.',
     },
-  ];
-};
+  ]
+}
 
 const Relations = () => {
-  const { t } = useTranslation();
-  const { section, cmsPublicPath } = useLoaderData<typeof loader>();
+  const { t } = useTranslation()
+  const { section, cmsPublicPath } = useLoaderData<typeof loader>()
 
   return (
     <Main>
       <ContentSection>
         <BreadcrumbList>
-          <Breadcrumb to="/">{t("Главная")}</Breadcrumb>
+          <Breadcrumb to="/">{t('Главная')}</Breadcrumb>
           {section.data.attributes.section.data && (
             <Breadcrumb to={`/s/${section.data.attributes.section.data.id}`}>
               {section.data.attributes.section.data.attributes.name}
@@ -54,7 +56,7 @@ const Relations = () => {
             <tr>
               <th className="p-4"></th>
               <th className="p-4 font-normal text-left text-gray-500">
-                Название
+                {t('Название')}
               </th>
             </tr>
           </thead>
@@ -96,7 +98,7 @@ const Relations = () => {
                         to={`${cmsPublicPath}${url}`}
                         className="break-all block p-4 hover:bg-black/5 transition-colors w-full rounded-xl duration-100"
                       >
-                        {name.replace(/\.[^/.]+$/, "")}
+                        {name.replace(/\.[^/.]+$/, '')}
                       </Link>
                     </div>
                   </td>
@@ -107,7 +109,7 @@ const Relations = () => {
         </table>
       </ContentSection>
     </Main>
-  );
-};
+  )
+}
 
-export default Relations;
+export default Relations
