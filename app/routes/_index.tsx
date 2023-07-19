@@ -1,4 +1,5 @@
 import { type V2_MetaFunction } from '@remix-run/node'
+import { Link } from '@remix-run/react'
 import { useTranslation } from 'react-i18next'
 import { ContentSection, Main } from '~/shared/ui'
 
@@ -47,6 +48,12 @@ const Index = () => {
                 </li>
               </ul>
             </div>
+            <Link
+              to="/authors"
+              className="bg-black/90 hover:bg-black transition-colors text-white px-8 py-4 rounded-xl"
+            >
+              {t('Разработчики')}
+            </Link>
           </div>
         </div>
       </ContentSection>
