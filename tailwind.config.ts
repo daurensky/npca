@@ -1,14 +1,14 @@
-import type { Config } from "tailwindcss";
+import type { Config } from 'tailwindcss'
 
 export default {
-  content: ["./app/**/*.{ts,tsx}"],
+  content: ['./app/**/*.{ts,tsx}'],
   theme: {
     extend: {
       fontFamily: {
-        heading: ["Lora", "serif"],
-        body: ["Roboto", "sans-serif"],
+        heading: ['Lora', 'serif'],
+        body: ['Roboto', 'sans-serif'],
       },
     },
   },
   plugins: [],
-} satisfies Config;
+} satisfies Config

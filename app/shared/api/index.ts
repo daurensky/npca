@@ -1,1 +1,1 @@
-export * as sectionsApi from "./sections.server";
+export * as sectionsApi from './sections.server'

@@ -1,26 +1,26 @@
-import { Link, useFetcher } from "@remix-run/react";
-import { useTranslation } from "react-i18next";
+import { Link, useFetcher } from '@remix-run/react'
+import { useTranslation } from 'react-i18next'
 
 const locales = [
   {
-    flag: "/ru.webp",
-    name: "Русский",
-    lang: "ru",
+    flag: '/ru.webp',
+    name: 'Русский',
+    lang: 'ru',
   },
   {
-    flag: "/kz.jpg",
-    name: "Қазақ",
-    lang: "kk",
+    flag: '/kz.jpg',
+    name: 'Қазақ',
+    lang: 'kk',
   },
-];
+]
 
 export const AppBar = () => {
-  const { t } = useTranslation();
-  const fetcher = useFetcher();
+  const { t } = useTranslation()
+  const fetcher = useFetcher()
 
   const handleLanguage = (lang: string) => () => {
-    fetcher.submit({ lang }, { method: "post" });
-  };
+    fetcher.submit({ lang }, { method: 'post' })
+  }
 
   return (
     <header className="py-8">
@@ -31,7 +31,7 @@ export const AppBar = () => {
             className="font-heading text-3xl leading-normal font-medium"
             dangerouslySetInnerHTML={{
               __html: t(
-                "Информационная площадка<br/>по освещению межнациональных отношений<br/>и национальной политики в странах Центральной Азии"
+                'Информационная площадка<br/>по освещению межнациональных отношений<br/>и национальной политики в странах Центральной Азии'
               ),
             }}
           ></Link>
@@ -55,5 +55,5 @@ export const AppBar = () => {
         </div>
       </div>
     </header>
-  );
-};
+  )
+}

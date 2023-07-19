@@ -1,9 +1,9 @@
-import { Link } from "@remix-run/react";
-import { useTranslation } from "react-i18next";
-import { CONTACT_EMAIL } from "~/shared/config/client";
+import { Link } from '@remix-run/react'
+import { useTranslation } from 'react-i18next'
+import { CONTACT_EMAIL } from '~/shared/config/client'
 
 export const Footer = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
 
   return (
     <footer className="py-8 bg-black/90 text-white">
@@ -19,7 +19,7 @@ export const Footer = () => {
             />
           </div>
           <div className="flex flex-col lg:items-end">
-            <p>{t("Контакты")}</p>
+            <p>{t('Контакты')}</p>
             <Link to={`mailto:${CONTACT_EMAIL}`} className="underline">
               {CONTACT_EMAIL}
             </Link>
@@ -27,5 +27,5 @@ export const Footer = () => {
         </div>
       </div>
     </footer>
-  );
-};
+  )
+}

@@ -4,15 +4,15 @@
  * For more information, see https://remix.run/file-conventions/entry.client
  */
 
-import { RemixBrowser } from "@remix-run/react";
-import i18next from "i18next";
-import LanguageDetector from "i18next-browser-languagedetector";
-import Backend from "i18next-http-backend";
-import { startTransition, StrictMode } from "react";
-import { hydrateRoot } from "react-dom/client";
-import { initReactI18next } from "react-i18next";
-import { getInitialNamespaces } from "remix-i18next";
-import { i18nConfig } from "~/shared/i18n";
+import { RemixBrowser } from '@remix-run/react'
+import i18next from 'i18next'
+import LanguageDetector from 'i18next-browser-languagedetector'
+import Backend from 'i18next-http-backend'
+import { startTransition, StrictMode } from 'react'
+import { hydrateRoot } from 'react-dom/client'
+import { initReactI18next } from 'react-i18next'
+import { getInitialNamespaces } from 'remix-i18next'
+import { i18nConfig } from '~/shared/i18n'
 
 async function hydrate() {
   await i18next
@@ -23,31 +23,31 @@ async function hydrate() {
       ...i18nConfig.config, // spread the configuration
       // This function detects the namespaces your routes rendered while SSR use
       ns: getInitialNamespaces(),
-      backend: { loadPath: "/locales/{{lng}}/{{ns}}.json" },
+      backend: { loadPath: '/locales/{{lng}}/{{ns}}.json' },
       detection: {
         // Here only enable htmlTag detection, we'll detect the language only
         // server-side with remix-i18next, by using the `<html lang>` attribute
         // we can communicate to the client the language detected server-side
-        order: ["htmlTag"],
+        order: ['htmlTag'],
         // Because we only use htmlTag, there's no reason to cache the language
         // on the browser, so we disable it
         caches: [],
       },
-    });
+    })
   startTransition(() => {
     hydrateRoot(
       document,
       <StrictMode>
         <RemixBrowser />
       </StrictMode>
-    );
-  });
+    )
+  })
 }
 
 if (window.requestIdleCallback) {
-  window.requestIdleCallback(hydrate);
+  window.requestIdleCallback(hydrate)
 } else {
   // Safari doesn't support requestIdleCallback
   // https://caniuse.com/requestidlecallback
-  window.setTimeout(hydrate, 1);
+  window.setTimeout(hydrate, 1)
 }

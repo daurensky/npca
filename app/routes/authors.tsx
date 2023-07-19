@@ -1,6 +1,20 @@
 import { Breadcrumb, BreadcrumbList, ContentSection, Main } from '~/shared/ui'
 import authorsList from '~/shared/data/authors.json'
 import { useTranslation } from 'react-i18next'
+import type { V2_MetaFunction } from '@remix-run/node'
+
+export const meta: V2_MetaFunction = () => {
+  return [
+    {
+      title: 'Разработчики',
+    },
+    {
+      name: 'description',
+      content:
+        'Мы рады Вас приветствовать на информационной площадке по освещению межнациональных отношений и национальной политики в странах Центральной Азии.',
+    },
+  ]
+}
 
 const Authors = () => {
   const { t, i18n } = useTranslation()

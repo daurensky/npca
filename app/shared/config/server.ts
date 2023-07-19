@@ -1,11 +1,11 @@
 const getEnv = (key: string) => {
   if (!process.env[key]) {
-    throw new Error(`${key} is not set`);
+    throw new Error(`${key} is not set`)
   }
-  return process.env[key] || "";
-};
+  return process.env[key] || ''
+}
 
-export const SERVER_URL = getEnv("SERVER_URL");
-export const SERVER_TOKEN = getEnv("SERVER_TOKEN");
+export const SERVER_URL = getEnv('SERVER_URL')
+export const SERVER_TOKEN = getEnv('SERVER_TOKEN')
 
-export const SESSION_SECRET = getEnv("SESSION_SECRET");
+export const SESSION_SECRET = getEnv('SESSION_SECRET')

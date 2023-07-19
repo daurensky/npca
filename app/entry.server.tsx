@@ -1,16 +1,16 @@
-import type { EntryContext } from "@remix-run/node";
-import { Response } from "@remix-run/node";
-import { RemixServer } from "@remix-run/react";
-import { createInstance } from "i18next";
-import Backend from "i18next-fs-backend";
-import isbot from "isbot";
-import { resolve } from "node:path";
-import { renderToPipeableStream } from "react-dom/server";
-import { I18nextProvider, initReactI18next } from "react-i18next";
-import { PassThrough } from "stream";
-import { i18nConfig, i18nModel } from "./shared/i18n";
+import type { EntryContext } from '@remix-run/node'
+import { Response } from '@remix-run/node'
+import { RemixServer } from '@remix-run/react'
+import { createInstance } from 'i18next'
+import Backend from 'i18next-fs-backend'
+import isbot from 'isbot'
+import { resolve } from 'node:path'
+import { renderToPipeableStream } from 'react-dom/server'
+import { I18nextProvider, initReactI18next } from 'react-i18next'
+import { PassThrough } from 'stream'
+import { i18nConfig, i18nModel } from './shared/i18n'
 
-const ABORT_DELAY = 5000;
+const ABORT_DELAY = 5000
 
 export default async function handleRequest(
   request: Request,
@@ -18,13 +18,13 @@ export default async function handleRequest(
   responseHeaders: Headers,
   remixContext: EntryContext
 ) {
-  let callbackName = isbot(request.headers.get("user-agent"))
-    ? "onAllReady"
-    : "onShellReady";
+  let callbackName = isbot(request.headers.get('user-agent'))
+    ? 'onAllReady'
+    : 'onShellReady'
 
-  let instance = createInstance();
-  let lng = await i18nModel.getLocale(request);
-  let ns = i18nModel.instance.getRouteNamespaces(remixContext);
+  let instance = createInstance()
+  let lng = await i18nModel.getLocale(request)
+  let ns = i18nModel.instance.getRouteNamespaces(remixContext)
 
   await instance
     .use(initReactI18next) // Tell our instance to use react-i18next
@@ -33,11 +33,11 @@ export default async function handleRequest(
       ...i18nConfig.config, // spread the configuration
       lng, // The locale we detected above
       ns, // The namespaces the routes about to render wants to use
-      backend: { loadPath: resolve("./public/locales/{{lng}}/{{ns}}.json") },
-    });
+      backend: { loadPath: resolve('./public/locales/{{lng}}/{{ns}}.json') },
+    })
 
   return new Promise((resolve, reject) => {
-    let didError = false;
+    let didError = false
 
     let { pipe, abort } = renderToPipeableStream(
       <I18nextProvider i18n={instance}>
@@ -45,30 +45,30 @@ export default async function handleRequest(
       </I18nextProvider>,
       {
         [callbackName]: () => {
-          let body = new PassThrough();
+          let body = new PassThrough()
 
-          responseHeaders.set("Content-Type", "text/html");
+          responseHeaders.set('Content-Type', 'text/html')
 
           resolve(
             new Response(body, {
               headers: responseHeaders,
               status: didError ? 500 : responseStatusCode,
             })
-          );
+          )
 
-          pipe(body);
+          pipe(body)
         },
         onShellError(error: unknown) {
-          reject(error);
+          reject(error)
         },
         onError(error: unknown) {
-          didError = true;
+          didError = true
 
-          console.error(error);
+          console.error(error)
         },
       }
-    );
+    )
 
-    setTimeout(abort, ABORT_DELAY);
-  });
+    setTimeout(abort, ABORT_DELAY)
+  })
 }
