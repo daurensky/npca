@@ -3,7 +3,7 @@ import { json } from '@remix-run/node'
 import { Link, useLoaderData } from '@remix-run/react'
 import { useTranslation } from 'react-i18next'
 import { sectionsApi } from '~/shared/api'
-import { SERVER_URL } from '~/shared/config/server'
+import { ASSETS_URL } from '~/shared/config/server'
 import { i18nModel } from '~/shared/i18n'
 import { Breadcrumb, BreadcrumbList, ContentSection, Main } from '~/shared/ui'
 
@@ -12,7 +12,7 @@ export const loader = async ({ request, params }: LoaderArgs) => {
   const locale = await i18nModel.getLocale(request)
 
   const section = await sectionsApi.getSectionById({ id: sectionId, locale })
-  const cmsPublicPath = SERVER_URL
+  const cmsPublicPath = ASSETS_URL
 
   return json({ section, cmsPublicPath })
 }
