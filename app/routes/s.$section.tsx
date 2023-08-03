@@ -94,12 +94,13 @@ const Relations = () => {
                   </td>
                   <td className="w-full">
                     <div className="pr-4">
-                      <Link
-                        to={`${cmsPublicPath}${url}`}
+                      <a
+                        target="_blank"
+                        href={`${cmsPublicPath}${url}`}
                         className="break-all block p-4 hover:bg-black/5 transition-colors w-full rounded-xl duration-100"
                       >
                         {name.replace(/\.[^/.]+$/, '')}
-                      </Link>
+                      </a>
                     </div>
                   </td>
                 </tr>
