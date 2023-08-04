@@ -35,11 +35,7 @@ export type Section = {
   sections: StrapiMultipleWrapper<Section>
 }
 
-export type GetSectionsListParams = {
-  locale: string
-}
-
-export const getSectionsList = async ({ locale }: GetSectionsListParams) => {
+export const getSectionsList = async () => {
   const { data } = await apiInstance.get<StrapiMultipleWrapper<Section>>(
     `/api/sections?${qs.stringify({
       populate: '*',
@@ -50,7 +46,6 @@ export const getSectionsList = async ({ locale }: GetSectionsListParams) => {
           },
         },
       },
-      locale,
     })}`
   )
   return data
@@ -58,13 +53,12 @@ export const getSectionsList = async ({ locale }: GetSectionsListParams) => {
 
 export type GetSectionByIdParams = {
   id: number | string
-  locale: string
 }
 
-export const getSectionById = async ({ id, locale }: GetSectionByIdParams) => {
+export const getSectionById = async ({ id }: GetSectionByIdParams) => {
   const { data } = await apiInstance.get<StrapiSingleWrapper<Section>>(
     `/api/sections/${id}`,
-    { params: { populate: '*', locale } }
+    { params: { populate: '*' } }
   )
   return data
 }

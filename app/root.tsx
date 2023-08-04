@@ -20,7 +20,7 @@ import styles from './tailwind.css'
 
 export const loader = async ({ request }: LoaderArgs) => {
   const locale = await i18nModel.getLocale(request)
-  const sections = await sectionsApi.getSectionsList({ locale })
+  const sections = await sectionsApi.getSectionsList()
   return json({ locale, sections })
 }
 
