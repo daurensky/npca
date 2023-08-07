@@ -81,6 +81,7 @@ const App = () => {
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
         />
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
         <Links />
       </head>
       <body className="flex flex-col h-screen font-body">
@@ -95,7 +96,7 @@ const App = () => {
                   to={`/s/${id}`}
                   className="p-8 text-xl bg-black/90 text-white font-heading font-medium rounded-xl w-full text-center flex justify-center items-center hover:bg-black transition-colors"
                 >
-                  {attributes.name}
+                  {t(attributes.name)}
                 </Link>
               </li>
             ))}

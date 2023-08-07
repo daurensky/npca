@@ -27,3 +27,7 @@ export const getLocale = async (request: Request) => {
   const session = await sessionModel.getSession(request.headers.get('cookie'))
   return session.get('lang') || 'ru'
 }
+
+export const getFixedT = async (request: Request) => {
+  return instance.getFixedT(await getLocale(request))
+}

@@ -9,9 +9,11 @@ import { Breadcrumb, BreadcrumbList, ContentSection, Main } from '~/shared/ui'
 
 export const loader = async ({ request, params }: LoaderArgs) => {
   const sectionId = params.section as string
-  const locale = await i18nModel.getLocale(request)
+  const t = await i18nModel.getFixedT(request)
 
-  const section = await sectionsApi.getSectionById({ id: sectionId, locale })
+  const section = await sectionsApi.getSectionById({ id: sectionId })
+  section.data.attributes.name = t(section.data.attributes.name)
+
   const cmsPublicPath = ASSETS_URL
 
   return json({ section, cmsPublicPath })
@@ -55,7 +57,7 @@ const Relations = () => {
           <thead>
             <tr>
               <th className="p-4"></th>
-              <th className="p-4 font-normal text-left text-gray-500">
+              <th className="p-4 font-normal text-left text-gray-500 w-full">
                 {t('Название')}
               </th>
             </tr>
@@ -63,7 +65,7 @@ const Relations = () => {
           <tbody>
             {section.data.attributes.sections.data.map(({ id, attributes }) => (
               <tr key={id}>
-                <td>
+                <td className="w-16">
                   <div className="px-4 flex items-center justify-center">
                     <span className="material-symbols-outlined text-3xl text-black/90">
                       folder
@@ -76,7 +78,7 @@ const Relations = () => {
                       to={`/s/${id}`}
                       className="break-all block p-4 hover:bg-black/5 transition-colors w-full rounded-xl duration-100"
                     >
-                      {attributes.name}
+                      {t(attributes.name)}
                     </Link>
                   </div>
                 </td>
@@ -85,7 +87,7 @@ const Relations = () => {
             {section.data.attributes.files.data?.map(
               ({ attributes: { hash, name, url } }) => (
                 <tr key={hash}>
-                  <td>
+                  <td className="w-16">
                     <div className="px-4 flex items-center justify-center">
                       <span className="material-symbols-outlined text-3xl text-black/90">
                         picture_as_pdf
@@ -96,6 +98,7 @@ const Relations = () => {
                     <div className="pr-4">
                       <a
                         target="_blank"
+                        rel="noreferrer"
                         href={`${cmsPublicPath}${url}`}
                         className="break-all block p-4 hover:bg-black/5 transition-colors w-full rounded-xl duration-100"
                       >
